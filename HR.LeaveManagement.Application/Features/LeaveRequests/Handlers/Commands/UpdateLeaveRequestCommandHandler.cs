@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using HR.LeaveManagement.Application.DTOs.LeaveRequest.Validators;
+using HR.LeaveManagement.Application.Exceptions;
 using HR.LeaveManagement.Application.Features.LeaveRequests.Requests.Commands;
 using HR.LeaveManagement.Application.Persistence.Contracts;
 using MediatR;
@@ -29,7 +29,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
 
             if (!validationResult.IsValid)
             {
-                throw new Exception();
+                throw new ValidationException(validationResult);
             }
 
             var leaveRequest = await _leaveRequestRepository.Get(request.Id);

@@ -1,8 +1,8 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using HR.LeaveManagement.Application.DTOs.LeaveType.Validators;
+using HR.LeaveManagement.Application.Exceptions;
 using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Commands;
 using HR.LeaveManagement.Application.Persistence.Contracts;
 using HR.LeaveManagement.Domain;
@@ -10,7 +10,7 @@ using MediatR;
 
 namespace HR.LeaveManagement.Application.Features.LeaveTypes.Handlers.Commands
 {
-    public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeCommand, Unit>
+    public class CreateLeaveTypeCommandHandler : IRequestHandler<CreateLeaveTypeCommand, int>
     {
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IMapper _mapper;
@@ -21,20 +21,20 @@ namespace HR.LeaveManagement.Application.Features.LeaveTypes.Handlers.Commands
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateLeaveTypeCommand request, CancellationToken cancellationToken)
         {
             var validator = new CreateLeaveTypeDtoValidator();
             var validationResult = await validator.ValidateAsync(request.LeaveTypeDto, cancellationToken);
 
             if (!validationResult.IsValid)
             {
-                throw new Exception();
+                throw new ValidationException(validationResult);
             }
 
             var leaveType = _mapper.Map<LeaveType>(request.LeaveTypeDto);
-            await _leaveTypeRepository.Add(leaveType);
+            leaveType = await _leaveTypeRepository.Add(leaveType);
 
-            return Unit.Value;
+            return leaveType.Id;
         }
     }
 }
