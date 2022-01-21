@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HR.LeaveManagement.Application.DTOs.LeaveType;
-using HR.LeaveManagement.Application.DTOs.LeaveType.Validators;
 using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Commands;
 using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Queries;
 using MediatR;
@@ -65,7 +64,6 @@ namespace HR.LeaveManagement.Api.Controllers
         {
             var command = new DeleteLeaveTypeCommand { Id = id };
             await _mediator.Send(command);
-
 
             return NoContent();
         }
