@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HR.LeaveManagement.MVC.Services;
 
 namespace HR.LeaveManagement.MVC
 {
@@ -23,6 +24,8 @@ namespace HR.LeaveManagement.MVC
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<IClient, Client>(c => c.BaseAddress = new Uri("https://localhost:44331"));
+
             services.AddControllersWithViews();
         }
 
