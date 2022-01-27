@@ -69,6 +69,7 @@ namespace HR.LeaveManagement.MVC.Services
             {
                 var leaveTypeDto = _mapper.Map<LeaveTypeDto>(leaveTypeViewModel);
                 AddBearerToken();
+                //TODO : Kontrol edilecek, Id parametresi gönderilmesi gerekiyorsa, cqrs ve controller tarafı değiştirilecek.
                 await _client.LeaveTypesPUTAsync(leaveTypeDto);
                 return new Response<int>() { Success = true };
             }
