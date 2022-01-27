@@ -8,9 +8,9 @@ namespace HR.LeaveManagement.MVC.Contracts
     public interface ILeaveTypeService
     {
         Task<List<LeaveTypeViewModel>> GetLeaveTypes();
-        Task<LeaveTypeViewModel> GetLeaveTypeDetail(int id);
+        Task<LeaveTypeViewModel> GetLeaveTypeDetails(int id);
         Task<Response<int>> CreateLeaveType(CreateLeaveTypeViewModel leaveTypeViewModel);
-        Task<Response<int>> UpdateLeaveType(int id, LeaveTypeViewModel leaveTypeViewModel);
+        Task<Response<int>> UpdateLeaveType(LeaveTypeViewModel leaveTypeViewModel);
         Task<Response<int>> DeleteLeaveType(int id);
     }
 }

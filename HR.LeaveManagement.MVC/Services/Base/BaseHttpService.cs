@@ -24,6 +24,10 @@ namespace HR.LeaveManagement.MVC.Services.Base
             {
                 return new Response<Guid> { Message = "The requested item could not be found.", Success = false };
             }
+            if (exception.StatusCode >= 200 && exception.StatusCode <= 299)
+            {
+                return new Response<Guid>() { Message = "Operation Reported Success", Success = true };
+            }
 
             return new Response<Guid> { Message = "Something went wrong, please try again.", Success = false };
         }

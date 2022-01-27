@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using HR.LeaveManagement.MVC.Contracts;
@@ -23,14 +22,14 @@ namespace HR.LeaveManagement.MVC.Services
 
         public async Task<List<LeaveTypeViewModel>> GetLeaveTypes()
         {
-            var leaveTypes = await _client.LeaveTypesAllAsync();
+            var leaveTypes = await _httpClient.LeaveTypesAllAsync();
 
             return _mapper.Map<List<LeaveTypeViewModel>>(leaveTypes);
         }
 
-        public async Task<LeaveTypeViewModel> GetLeaveTypeDetail(int id)
+        public async Task<LeaveTypeViewModel> GetLeaveTypeDetails(int id)
         {
-            var leaveType = await _client.LeaveTypesGETAsync(id);
+            var leaveType = await _httpClient.LeaveTypesGETAsync(id);
 
             return _mapper.Map<LeaveTypeViewModel>(leaveType);
         }
@@ -41,7 +40,7 @@ namespace HR.LeaveManagement.MVC.Services
             {
                 var response = new Response<int>();
                 var createLeaveType = _mapper.Map<CreateLeaveTypeDto>(leaveTypeViewModel);
-                var apiResponse = await _client.LeaveTypesPOSTAsync(createLeaveType);
+                var apiResponse = await _httpClient.LeaveTypesPOSTAsync(createLeaveType);
                 if (apiResponse.Success)
                 {
                     response.Data = apiResponse.Id;
@@ -63,14 +62,12 @@ namespace HR.LeaveManagement.MVC.Services
             }
         }
 
-        public async Task<Response<int>> UpdateLeaveType(int id, LeaveTypeViewModel leaveTypeViewModel)
+        public async Task<Response<int>> UpdateLeaveType(LeaveTypeViewModel leaveTypeViewModel)
         {
             try
             {
                 var leaveTypeDto = _mapper.Map<LeaveTypeDto>(leaveTypeViewModel);
-                AddBearerToken();
-                //TODO : Kontrol edilecek, Id parametresi gönderilmesi gerekiyorsa, cqrs ve controller tarafı değiştirilecek.
-                await _client.LeaveTypesPUTAsync(leaveTypeDto);
+                await _httpClient.LeaveTypesPUTAsync(leaveTypeDto);
                 return new Response<int>() { Success = true };
             }
             catch (ApiException ex)
@@ -83,7 +80,7 @@ namespace HR.LeaveManagement.MVC.Services
         {
             try
             {
-                await _client.LeaveTypesDELETEAsync(id);
+                await _httpClient.LeaveTypesDELETEAsync(id);
 
                 return new Response<int> { Success = true };
             }
