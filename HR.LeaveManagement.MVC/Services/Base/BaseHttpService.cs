@@ -5,7 +5,7 @@ namespace HR.LeaveManagement.MVC.Services.Base
 {
     public class BaseHttpService
     {
-        private readonly ILocalStorageService _localStorage;
+        protected readonly ILocalStorageService _localStorage;
         protected IClient _client;
         public BaseHttpService(ILocalStorageService localStorage, IClient client)
         {
