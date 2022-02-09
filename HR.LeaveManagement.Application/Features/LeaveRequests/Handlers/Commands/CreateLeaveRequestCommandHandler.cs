@@ -75,17 +75,17 @@ namespace HR.LeaveManagement.Application.Features.LeaveRequests.Handlers.Command
                 response.Message = "Creation Successful";
                 response.Id = leaveRequests.Id;
 
-                var emailAddress = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
-
-                var email = new Email
-                {
-                    To = emailAddress,
-                    Body = $"Your leave request for {request.LeaveRequestDto.StartDate:D} to {request.LeaveRequestDto.EndDate:D} has been submitted successfully.",
-                    Subject = "Leave Request Submitted"
-                };
-
                 try
                 {
+                    var emailAddress = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email)?.Value;
+
+                    var email = new Email
+                    {
+                        To = emailAddress,
+                        Body = $"Your leave request for {request.LeaveRequestDto.StartDate:D} to {request.LeaveRequestDto.EndDate:D} has been submitted successfully.",
+                        Subject = "Leave Request Submitted"
+                    };
+
                     await _emailSender.SendEmail(email);
                 }
                 catch (Exception e)
