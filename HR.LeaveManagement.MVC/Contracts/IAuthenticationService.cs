@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using HR.LeaveManagement.MVC.Models;
+using HR.LeaveManagement.MVC.Models.Identity;
 
 namespace HR.LeaveManagement.MVC.Contracts
 {

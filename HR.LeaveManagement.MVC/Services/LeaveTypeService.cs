@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HR.LeaveManagement.MVC.Contracts;
 using HR.LeaveManagement.MVC.Models;
+using HR.LeaveManagement.MVC.Models.LeaveTypes;
 using HR.LeaveManagement.MVC.Services.Base;
 
 namespace HR.LeaveManagement.MVC.Services
@@ -13,7 +14,9 @@ namespace HR.LeaveManagement.MVC.Services
         private readonly ILocalStorageService _localStorageService;
         private readonly IMapper _mapper;
         private readonly IClient _httpClient;
-        public LeaveTypeService(IMapper mapper, ILocalStorageService localStorageService, IClient httpClient) : base(localStorageService, httpClient)
+        public LeaveTypeService(IMapper mapper,
+            ILocalStorageService localStorageService, 
+            IClient httpClient) : base(localStorageService, httpClient)
         {
             _localStorageService = localStorageService;
             _mapper = mapper;

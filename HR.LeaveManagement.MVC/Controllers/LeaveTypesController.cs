@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using HR.LeaveManagement.MVC.Contracts;
-using HR.LeaveManagement.MVC.Models;
+using HR.LeaveManagement.MVC.Models.LeaveTypes;
 using Microsoft.AspNetCore.Authorization;
 
 namespace HR.LeaveManagement.MVC.Controllers

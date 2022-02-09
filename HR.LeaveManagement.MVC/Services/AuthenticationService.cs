@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HR.LeaveManagement.MVC.Contracts;
 using HR.LeaveManagement.MVC.Models;
+using HR.LeaveManagement.MVC.Models.Identity;
 using HR.LeaveManagement.MVC.Services.Base;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using HR.LeaveManagement.MVC.Contracts;
 using HR.LeaveManagement.MVC.Models;
+using HR.LeaveManagement.MVC.Models.Identity;
 
 namespace HR.LeaveManagement.MVC.Controllers
 {
