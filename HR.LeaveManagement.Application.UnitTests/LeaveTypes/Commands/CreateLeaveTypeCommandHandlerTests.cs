@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HR.LeaveManagement.Application.Contracts.Persistence;
 using HR.LeaveManagement.Application.DTOs.LeaveType;
-using HR.LeaveManagement.Application.Exceptions;
 using HR.LeaveManagement.Application.Features.LeaveTypes.Handlers.Commands;
 using HR.LeaveManagement.Application.Features.LeaveTypes.Requests.Commands;
 using HR.LeaveManagement.Application.Profiles;
@@ -18,13 +17,13 @@ namespace HR.LeaveManagement.Application.UnitTests.LeaveTypes.Commands
     public class CreateLeaveTypeCommandHandlerTests
     {
         private readonly IMapper _mapper;
-        private readonly Mock<ILeaveTypeRepository> _mockRepository;
+        private readonly Mock<IUnitOfWork> _mockRepository;
         private readonly CreateLeaveTypeDto _createLeaveTypeDto;
         private readonly CreateLeaveTypeCommandHandler _handler;
 
         public CreateLeaveTypeCommandHandlerTests()
         {
-            _mockRepository = MockLeaveTypeRepository.GetLeaveTypeRepository();
+            _mockRepository = MockUnitOfWork.GetUnitOfWork();
 
             var mapperConfig = new MapperConfiguration(c =>
             {
@@ -45,7 +44,7 @@ namespace HR.LeaveManagement.Application.UnitTests.LeaveTypes.Commands
         {
             var result = await _handler.Handle(new CreateLeaveTypeCommand { LeaveTypeDto = _createLeaveTypeDto }, CancellationToken.None);
 
-            var leaveTypes = await _mockRepository.Object.GetAll();
+            var leaveTypes = await _mockRepository.Object.LeaveTypeRepository.GetAll();
 
             result.ShouldBeOfType<BaseCommandResponse>();
             leaveTypes.Count.ShouldBe(4);
@@ -57,7 +56,7 @@ namespace HR.LeaveManagement.Application.UnitTests.LeaveTypes.Commands
             _createLeaveTypeDto.DefaultDays = -1;
 
             var result = await _handler.Handle(new CreateLeaveTypeCommand { LeaveTypeDto = _createLeaveTypeDto }, CancellationToken.None);
-            var leaveTypes = await _mockRepository.Object.GetAll();
+            var leaveTypes = await _mockRepository.Object.LeaveTypeRepository.GetAll();
 
             leaveTypes.Count.ShouldBe(3);
 

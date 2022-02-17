@@ -34,7 +34,8 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public async Task<T> Add(T entity)
         {
             await _context.AddAsync(entity);
-            await _context.SaveChangesAsync();
+            //TODO : UnitOfWork Tarafında SaveChangesAsync() eklendi.
+            //await _context.SaveChangesAsync();
 
             return entity;
         }
@@ -42,13 +43,15 @@ namespace HR.LeaveManagement.Persistence.Repositories
         public async Task Update(T entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            //TODO : UnitOfWork Tarafında SaveChangesAsync() eklendi.
+            //await _context.SaveChangesAsync();
         }
 
         public async Task Delete(T entity)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
+            //TODO : UnitOfWork Tarafında SaveChangesAsync() eklendi.
+            // await _context.SaveChangesAsync();
         }
     }
 }

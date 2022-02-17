@@ -11,20 +11,20 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Comm
 {
     public class UpdateLeaveAllocationCommandHandler : IRequestHandler<UpdateLeaveAllocationCommand, Unit>
     {
-        private readonly ILeaveAllocationRepository _leaveAllocationRepository;
-        private readonly ILeaveTypeRepository _leaveTypeRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public UpdateLeaveAllocationCommandHandler(ILeaveAllocationRepository leaveAllocationRepository, IMapper mapper, ILeaveTypeRepository leaveTypeRepository)
+        public UpdateLeaveAllocationCommandHandler(IUnitOfWork unitOfWork,
+            IMapper mapper)
         {
-            _leaveAllocationRepository = leaveAllocationRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _leaveTypeRepository = leaveTypeRepository;
+
         }
 
         public async Task<Unit> Handle(UpdateLeaveAllocationCommand request, CancellationToken cancellationToken)
         {
-            var validator = new UpdateLeaveAllocationDtoValidator(_leaveTypeRepository);
+            var validator = new UpdateLeaveAllocationDtoValidator(_unitOfWork.LeaveTypeRepository);
             var validationResult = await validator.ValidateAsync(request.LeaveAllocationDto, cancellationToken);
 
             if (!validationResult.IsValid)
@@ -33,10 +33,11 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Comm
             }
 
 
-            var leaveAllocation = await _leaveAllocationRepository.Get(request.LeaveAllocationDto.Id);
+            var leaveAllocation = await _unitOfWork.LeaveAllocationRepository.Get(request.LeaveAllocationDto.Id);
             _mapper.Map(request.LeaveAllocationDto, leaveAllocation);
 
-            await _leaveAllocationRepository.Update(leaveAllocation);
+            await _unitOfWork.LeaveAllocationRepository.Update(leaveAllocation);
+            await _unitOfWork.Save();
 
             return Unit.Value;
         }

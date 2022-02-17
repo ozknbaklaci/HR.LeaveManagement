@@ -46,7 +46,8 @@ namespace HR.LeaveManagement.Persistence.Repositories
         {
             leaveRequest.Approved = approvalStatus;
             _context.Entry(leaveRequest).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
+            //TODO : UnitOfWork Tarafında SaveChangesAsync() eklendi.
+            //await _context.SaveChangesAsync();
         }
     }
 }
