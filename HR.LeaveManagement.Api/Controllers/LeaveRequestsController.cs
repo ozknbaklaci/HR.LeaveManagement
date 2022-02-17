@@ -23,9 +23,9 @@ namespace HR.LeaveManagement.Api.Controllers
 
         // GET: api/<LeaveRequestsController>
         [HttpGet]
-        public async Task<ActionResult<List<LeaveRequestDto>>> Get()
+        public async Task<ActionResult<List<LeaveRequestListDto>>> Get(bool isLoggedInUser = false)
         {
-            var leaveRequests = await _mediator.Send(new GetLeaveRequestListRequest());
+            var leaveRequests = await _mediator.Send(new GetLeaveRequestListRequest { IsLoggedInUser = isLoggedInUser });
 
             return Ok(leaveRequests);
         }
@@ -60,15 +60,15 @@ namespace HR.LeaveManagement.Api.Controllers
         }
 
 
-        // PUT api/<LeaveRequestsController>/changeApproval
-        [HttpPut("{changeApproval}/{id}")]
+        // PUT api/<LeaveRequestsController>/changeapproval/5
+        [HttpPut("changeapproval/{id}")]
         public async Task<ActionResult> ChangeApproval(int id, [FromBody] ChangeLeaveRequestApprovalDto changeLeaveRequestApproval)
         {
             var command = new UpdateLeaveRequestCommand { Id = id, ChangeLeaveRequestApprovalDto = changeLeaveRequestApproval };
             await _mediator.Send(command);
-
             return NoContent();
         }
+
 
         // DELETE api/<LeaveRequestsController>/5
         [HttpDelete("{id}")]

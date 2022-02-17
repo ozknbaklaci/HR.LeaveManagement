@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using HR.LeaveManagement.MVC.Contracts;
 using HR.LeaveManagement.MVC.Models.LeaveRequests;
@@ -20,9 +21,18 @@ namespace HR.LeaveManagement.MVC.Controllers
             _leaveRequestService = leaveRequestService;
         }
 
-        public ActionResult Index()
+        [Authorize(Roles = "Administrator")]
+        //GET: LeaveRequests
+        public async Task<ActionResult> Index()
         {
-            return View();
+            var model = await _leaveRequestService.GetAdminLeaveRequestList();
+            return View(model);
+        }
+
+        public async Task<ActionResult> Details(int id)
+        {
+            var model = await _leaveRequestService.GetLeaveRequest(id);
+            return View(model);
         }
 
         // GET: LeaveRequest/Create
@@ -58,6 +68,22 @@ namespace HR.LeaveManagement.MVC.Controllers
             leaveRequest.LeaveTypes = leaveTypeItems;
 
             return View(leaveRequest);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
+        public async Task<ActionResult> ApproveRequest(int id, bool approved)
+        {
+            try
+            {
+                await _leaveRequestService.ApproveLeaveRequest(id, approved);
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception)
+            {
+                return RedirectToAction(nameof(Index));
+            }
         }
     }
 }

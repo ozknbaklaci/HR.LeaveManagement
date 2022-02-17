@@ -15,7 +15,7 @@ namespace HR.LeaveManagement.MVC.Services
         private readonly IMapper _mapper;
         private readonly IClient _httpClient;
         public LeaveTypeService(IMapper mapper,
-            ILocalStorageService localStorageService, 
+            ILocalStorageService localStorageService,
             IClient httpClient) : base(localStorageService, httpClient)
         {
             _localStorageService = localStorageService;
@@ -68,13 +68,13 @@ namespace HR.LeaveManagement.MVC.Services
             }
         }
 
-        public async Task<Response<int>> UpdateLeaveType(LeaveTypeViewModel leaveTypeViewModel)
+        public async Task<Response<int>> UpdateLeaveType(int id, LeaveTypeViewModel leaveTypeViewModel)
         {
             try
             {
                 var leaveTypeDto = _mapper.Map<LeaveTypeDto>(leaveTypeViewModel);
                 AddBearerToken();
-                await _httpClient.LeaveTypesPUTAsync(leaveTypeDto);
+                await _httpClient.LeaveTypesPUTAsync(id.ToString(), leaveTypeDto);
                 return new Response<int>() { Success = true };
             }
             catch (ApiException ex)

@@ -51,7 +51,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveAllocations.Handlers.Comm
 
                 foreach (var employee in employees)
                 {
-                    if (await _leaveAllocationRepository.AllocationExist(employee.Id, leaveType.Id, period))
+                    if (await _leaveAllocationRepository.AllocationExists(employee.Id, leaveType.Id, period))
                         continue;
 
                     allocations.Add(new LeaveAllocation

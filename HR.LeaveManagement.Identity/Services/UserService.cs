@@ -29,5 +29,18 @@ namespace HR.LeaveManagement.Identity.Services
                 LastName = x.LastName
             }).ToList();
         }
+
+        public async Task<Employee> GetEmployee(string userId)
+        {
+            var employee = await _userManager.FindByIdAsync(userId);
+
+            return new Employee
+            {
+                Id = employee.Id,
+                Email = employee.Email,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName
+            };
+        }
     }
 }

@@ -74,11 +74,11 @@ namespace HR.LeaveManagement.MVC.Controllers
         // POST: LeaveTypesController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(LeaveTypeViewModel leaveTypeViewModel)
+        public async Task<ActionResult> Edit(int id, LeaveTypeViewModel leaveTypeViewModel)
         {
             try
             {
-                var response = await _leaveTypeService.UpdateLeaveType(leaveTypeViewModel);
+                var response = await _leaveTypeService.UpdateLeaveType(id, leaveTypeViewModel);
                 if (response.Success)
                 {
                     return RedirectToAction(nameof(Index));

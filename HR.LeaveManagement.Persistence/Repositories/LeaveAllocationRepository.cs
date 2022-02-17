@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HR.LeaveManagement.Application.Contracts.Persistence;
 using HR.LeaveManagement.Domain;
@@ -32,7 +33,7 @@ namespace HR.LeaveManagement.Persistence.Repositories
             return leaveAllocations;
         }
 
-        public async Task<bool> AllocationExist(string userId, int leaveTypeId, int period)
+        public async Task<bool> AllocationExists(string userId, int leaveTypeId, int period)
         {
             return await _context.LeaveAllocations.AnyAsync(x => x.EmployeeId == userId
                                                                  && x.LeaveTypeId == leaveTypeId
@@ -49,6 +50,15 @@ namespace HR.LeaveManagement.Persistence.Repositories
         {
             return await _context.LeaveAllocations.FirstOrDefaultAsync(x => x.EmployeeId == userId
                                                                  && x.LeaveTypeId == leaveTypeId);
+        }
+
+        public async Task<List<LeaveAllocation>> GetLeaveAllocationsWithDetails(string userId)
+        {
+            var leaveAllocations = await _context.LeaveAllocations.Where(x => x.EmployeeId == userId)
+                .Include(x => x.LeaveType)
+                .ToListAsync();
+
+            return leaveAllocations;
         }
     }
 }
