@@ -20,6 +20,7 @@ using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
+using HR.LeaveManagement.MVC.CustomMiddleware;
 
 namespace HR.LeaveManagement.MVC
 {
@@ -80,6 +81,7 @@ namespace HR.LeaveManagement.MVC
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseMiddleware<RequestMiddleware>();
 
             app.UseAuthorization();
 

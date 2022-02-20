@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using HR.LeaveManagement.Application.Constants;
 using HR.LeaveManagement.Application.Contracts.Persistence;
+using Microsoft.AspNetCore.Http;
 
 namespace HR.LeaveManagement.Persistence.Repositories
 {
@@ -10,11 +12,13 @@ namespace HR.LeaveManagement.Persistence.Repositories
         private ILeaveAllocationRepository _leaveAllocationRepository;
         private ILeaveTypeRepository _leaveTypeRepository;
         private ILeaveRequestRepository _leaveRequestRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-
-        public UnitOfWork(LeaveManagementDbContext dbContext)
+        public UnitOfWork(LeaveManagementDbContext dbContext,
+            IHttpContextAccessor httpContextAccessor)
         {
             _dbContext = dbContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public ILeaveAllocationRepository LeaveAllocationRepository =>
@@ -34,7 +38,9 @@ namespace HR.LeaveManagement.Persistence.Repositories
 
         public async Task Save()
         {
-            await _dbContext.SaveChangesAsync();
+            var userName = _httpContextAccessor.HttpContext.User.FindFirst(CustomClaimTypes.Uid)?.Value;
+
+            await _dbContext.SaveChangesAsync(userName);
         }
     }
 }
